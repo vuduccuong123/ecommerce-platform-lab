@@ -1,0 +1,43 @@
+---
+- name: Install Bind9 package
+  yum:
+    name: bind
+    state: present
+  become: yes
+
+- name: Configure named.conf
+  template:
+    src: named.conf.j2
+    dest: /etc/named.conf
+    backup: yes
+  become: yes
+  notify: Restart named
+
+- name: Configure lab.local zone
+  template:
+    src: db.lab.local.j2
+    dest: /var/named/db.lab.local
+    owner: root
+    group: named
+    mode: "0640"
+  become: yes
+  notify: Restart named
+
+- name: Open DNS firewall permanently
+  command: firewall-cmd --add-service=dns --permanent
+  become: yes
+  changed_when: false
+  failed_when: false
+
+- name: Reload firewall
+  command: firewall-cmd --reload
+  become: yes
+  changed_when: false
+  failed_when: false
+
+- name: Enable and start named
+  service:
+    name: named
+    state: started
+    enabled: yes
+  become: yes

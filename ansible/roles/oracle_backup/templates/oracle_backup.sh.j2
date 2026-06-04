@@ -1,0 +1,25 @@
+#!/bin/bash
+
+export ORACLE_HOME=/u01/app/oracle/product/19.0.0/db_1
+export ORACLE_SID=oradb
+export PATH=$ORACLE_HOME/bin:$PATH
+
+BACKUP_DIR=/nfs/backups
+DATE=$(date +%Y%m%d_%H%M%S)
+
+mkdir -p ${BACKUP_DIR}
+
+sqlplus / as sysdba <<EOF
+CREATE PFILE='${BACKUP_DIR}/init_${DATE}.ora' FROM SPFILE;
+EXIT;
+EOF
+
+expdp ecommerce/Ecommerce123 \
+directory=BACKUP_DIR \
+dumpfile=ecommerce_${DATE}.dmp \
+logfile=ecommerce_${DATE}.log \
+schemas=ECOMMERCE
+
+echo "Backup completed at $(date)" > ${BACKUP_DIR}/backup_${DATE}.log
+
+find ${BACKUP_DIR} -type f -mtime +7 -delete

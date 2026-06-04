@@ -1,0 +1,7 @@
+---
+- name: Configure NFS Server
+  hosts: oracle
+  become: yes
+
+  roles:
+    - nfs_server

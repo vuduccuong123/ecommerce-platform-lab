@@ -1,0 +1,19 @@
+$TTL 86400
+@   IN  SOA srv1.lab.local. admin.lab.local. (
+        2026060401
+        3600
+        1800
+        604800
+        86400 )
+
+@       IN  NS      srv1.lab.local.
+
+srv1    IN  A       192.168.56.2
+oracle  IN  A       192.168.56.2
+nfs     IN  A       192.168.56.2
+
+shop    IN  A       127.0.0.1
+jenkins IN  A       127.0.0.1
+argocd  IN  A       127.0.0.1
+keycloak IN A       127.0.0.1
+vault   IN  A       127.0.0.1

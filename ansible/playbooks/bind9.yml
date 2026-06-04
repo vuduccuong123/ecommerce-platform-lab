@@ -1,0 +1,7 @@
+---
+- name: Configure Bind9 DNS Server
+  hosts: oracle
+  become: yes
+
+  roles:
+    - bind9_server

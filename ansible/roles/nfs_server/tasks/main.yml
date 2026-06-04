@@ -1,0 +1,34 @@
+---
+- name: Install NFS packages
+  yum:
+    name: nfs-utils
+    state: present
+  become: yes
+
+- name: Create NFS directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0777"
+  loop:
+    - /nfs/shared
+    - /nfs/uploads
+    - /nfs/backups
+  become: yes
+
+- name: Configure exports
+  template:
+    src: exports.j2
+    dest: /etc/exports
+  become: yes
+
+- name: Restart NFS
+  service:
+    name: nfs-server
+    state: restarted
+    enabled: yes
+  become: yes
+
+- name: Export NFS shares
+  command: exportfs -ra
+  become: yes

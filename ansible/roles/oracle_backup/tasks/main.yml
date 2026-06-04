@@ -1,0 +1,19 @@
+---
+- name: Ensure backup directory exists
+  file:
+    path: /nfs/backups
+    state: directory
+    mode: "0777"
+
+- name: Deploy backup script
+  template:
+    src: oracle_backup.sh.j2
+    dest: /usr/local/bin/oracle_backup.sh
+    mode: "0755"
+
+- name: Create cron job
+  cron:
+    name: "Oracle Backup"
+    minute: "0"
+    hour: "2"
+    job: "/usr/local/bin/oracle_backup.sh"

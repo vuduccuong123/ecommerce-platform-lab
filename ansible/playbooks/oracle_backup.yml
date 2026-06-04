@@ -1,0 +1,7 @@
+---
+- name: Configure Oracle Backup
+  hosts: oracle
+  become: yes
+
+  roles:
+    - oracle_backup
