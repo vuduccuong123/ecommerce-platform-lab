@@ -24,7 +24,7 @@ spec:
         runAsUser: 1000
       containers:
       - name: server
-        image: cuong2003/productcatalogservice:4
+        image: cuong2003/productcatalogservice:5
         imagePullPolicy: IfNotPresent
         env:
         - name: PORT
